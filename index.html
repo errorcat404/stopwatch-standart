@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Секундомер</title>
+</head>
+<body>
+    <div class="stopwatch">
+        <div id="display">00:00:00</div>
+        <button id="startStopBtn" onclick="startStop()">Старт</button>
+        <button id="resetBtn" onclick="reset()">Сброс</button>
+    </div>
+    <script>
+        let timer;
+let running = false;
+let startTime;
+let elapsedTime = 0;
+
+function startStop() {
+    if (running) {
+        clearInterval(timer);
+        running = false;
+        document.getElementById("startStopBtn").textContent = "Старт";
+    } else {
+        running = true;
+        document.getElementById("startStopBtn").textContent = "Стоп";
+        startTime = Date.now() - elapsedTime;
+        timer = setInterval(updateDisplay, 10);
+    }
+}
+
+function reset() {
+    clearInterval(timer);
+    running = false;
+    elapsedTime = 0;
+    document.getElementById("startStopBtn").textContent = "Старт";
+    document.getElementById("display").textContent = "00:00:00";
+}
+
+function updateDisplay() {
+    elapsedTime = Date.now() - startTime;
+    let milliseconds = parseInt((elapsedTime % 1000) / 10);
+    let seconds = parseInt((elapsedTime / 1000) % 60);
+    let minutes = parseInt((elapsedTime / (1000 * 60)) % 60);
+
+    milliseconds = milliseconds < 10 ? "0" + milliseconds : milliseconds;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+
+    document.getElementById("display").textContent = `${minutes}:${seconds}:${milliseconds}`;
+}
+
+    </script>
+    <style>
+        body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.stopwatch {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#display {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+button {
+    font-size: 1em;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#startStopBtn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#resetBtn {
+    background-color: #f44336;
+    color: white;
+}
+
+    </style>
+</body>
+</html>
